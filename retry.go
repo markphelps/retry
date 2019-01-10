@@ -109,6 +109,27 @@ func WithWaiter(waiter Waiter) Option {
 	}
 }
 
+// WithDuration sets the waiter to use a Duration WaiterFunc with the specified duration
+func WithDuration(d time.Duration) Option {
+	return func(r *Retriable) {
+		r.waiter = Duration(d)
+	}
+}
+
+// WithIncrementalBackoff sets the waiter to use an IncrementalBackoff WaiterFunc with the specified duration
+func WithIncrementalBackoff(d time.Duration) Option {
+	return func(r *Retriable) {
+		r.waiter = IncrementalBackoff(d)
+	}
+}
+
+// WithExponentialBackoff sets the waiter to use an ExponentialBackoff WaiterFunc with the specified duration
+func WithExponentialBackoff(d time.Duration) Option {
+	return func(r *Retriable) {
+		r.waiter = ExponentialBackoff(d)
+	}
+}
+
 // Do calls the function f provided, retrying on any errors according
 // to the properties defined on the Retriable r
 func (r *Retriable) Do(f func() error) error {
